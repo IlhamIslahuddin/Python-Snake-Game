@@ -80,7 +80,7 @@ def next_turn(snake, food):
         if score >= 10 and score < 20:
             label.config(text="Current Score: {}".format(score),font=("System",40),fg= "red")
         elif score >= 20 and score < 30:
-            label.config(text="Current Score: {}".format(score),font=("System",40),fg= "yellow")
+            label.config(text="Current Score: {}".format(score),font=("System",40),fg= "green")
         elif score >= 30:
             label.config(text="Current Score: {}".format(score),font=("System",40),fg= "blue")
         else:
