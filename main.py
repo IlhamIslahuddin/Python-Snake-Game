@@ -17,7 +17,6 @@ FOOD_COLOR = "#FF0000"
 BACKGROUND_COLOR = "#000000"
 
 class Snake:
-
     def __init__(self):
 
         self.body_size = body_parts
@@ -39,31 +38,27 @@ class Snake:
 class Food:
 
     def __init__(self):
-
         x = random.randint(0, (GAME_WIDTH // SPACE_SIZE)-1) * SPACE_SIZE
-
         y = random.randint(0, (GAME_HEIGHT // SPACE_SIZE) - 1) * SPACE_SIZE
-
         self.coordinates = [x, y]
-
-        canvas.create_oval(x, y, x + SPACE_SIZE, y + SPACE_SIZE, fill=FOOD_COLOR, tag="food")
+        food = canvas.create_rectangle(x, y, x + SPACE_SIZE, y + SPACE_SIZE, fill=FOOD_COLOR, tag="food")
+        canvas.coords(food, (x+5, y+5, (x+SPACE_SIZE)-5, (y+SPACE_SIZE)-5))
 
 def set_difficulty(diff):
     global speed
     global body_parts
     if diff == "easy":
         speed = 100
-        body_parts = 4
+        body_parts = 2
         diff = ""
     elif diff == "normal":
-        speed = 50
+        speed = 70
         body_parts = 3
         diff = ""
     elif diff == "hard":
-        speed = 30
-        body_parts = 2
+        speed = 40
+        body_parts = 4
         diff = ""
-    main()
     
 def next_turn(snake, food):
     x, y = snake.coordinates[0]
@@ -80,11 +75,8 @@ def next_turn(snake, food):
         x += SPACE_SIZE
 
     snake.coordinates.insert(0, (x, y))
-
     square = canvas.create_rectangle(x, y, x + SPACE_SIZE, y + SPACE_SIZE, fill=SNAKE_COLOR)
-
     snake.squares.insert(0, square)
-
     if x == food.coordinates[0] and y == food.coordinates[1]:
         global score
         score += 1
@@ -107,24 +99,21 @@ def change_direction(new_direction):
     if new_direction == 'left':
         if direction != 'right':
             direction = new_direction
-
     elif new_direction == 'right':
         if direction != 'left':
             direction = new_direction
-
     elif new_direction == 'up':
         if direction != 'down':
             direction = new_direction
-
     elif new_direction == 'down':
         if direction != 'up':
             direction = new_direction
 
 def check_collisions(snake):
     x, y = snake.coordinates[0]
-    if x < 0 or x >= GAME_WIDTH:
+    if x < 0 or x > GAME_WIDTH:
         return True
-    elif y < 0 or y >= GAME_HEIGHT:
+    elif y < 0 or y > GAME_HEIGHT:
         return True
 
     for body_part in snake.coordinates[1:]:
@@ -137,17 +126,20 @@ def game_over():
     canvas.create_text(canvas.winfo_width()/2, canvas.winfo_height()/2,
                        font=('System',70), text="--GAME OVER--", fill="red", tag="gameover")
     
-def main():
+def main(event=""):
+    global score, direction
+    score = 0
+    direction = 'down'
+    label.config(text="Current Score: {}".format(score))
+    canvas.delete(ALL)
     snake = Snake()
     food = Food()
-    insert.place_forget()
     next_turn(snake, food)
 
 window = Tk()
 window.title("Snake game")
 window.resizable(False, False)
 score = 0
-direction = 'down'
 label = Label(window, text="Current Score: {}".format(score), font=('System', 40))
 label.pack()
 
@@ -165,29 +157,20 @@ difficulty3.pack()
 window.update()
 
 window_width = window.winfo_width()
-
 window_height = window.winfo_height()
-
 screen_width = window.winfo_screenwidth()
-
 screen_height = window.winfo_screenheight()
 
-x = int((screen_width/2) - (window_width//2))
-
+x = int((screen_width//2) - (window_width//2))
 y = int((screen_height//2) - (window_height//2))
 
 window.geometry(f"{window_width}x{window_height}+{x}+{y}")
 
+window.bind("<Return>", main)
 window.bind('<Left>', lambda event: change_direction('left'))
-
 window.bind('<Right>', lambda event: change_direction('right'))
-
 window.bind('<Up>', lambda event: change_direction('up'))
-
 window.bind('<Down>', lambda event: change_direction('down'))
-
-insert = Label(window,font=('System',70), text="INSERT COIN...",foreground='white')
-insert.pack()
-# canvas.create_text(canvas.winfo_width()/2, canvas.winfo_height()/2,font=('System',70), text="INSERT COIN...", fill="white", tag="insertcoin")
+insert = canvas.create_text(canvas.winfo_width()/2, canvas.winfo_height()/2,font=('System',70), text="INSERT COIN...", fill="white", tag="insertcoin")
         
 window.mainloop()
