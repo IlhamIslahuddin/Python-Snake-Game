@@ -7,8 +7,8 @@ global SPACE_SIZE
 global SNAKE_COLOR
 global FOOD_COLOR
 global BACKGROUND_COLOR
-GAME_WIDTH = 700
-GAME_HEIGHT = 700
+GAME_WIDTH = 600
+GAME_HEIGHT = 600
 speed = 100
 SPACE_SIZE = 50
 body_parts = 3
@@ -78,13 +78,13 @@ def next_turn(snake, food):
         global score
         score += 1
         if score >= 10 and score < 20:
-            label.config(text="Current Score: {}".format(score),font=("System",40),fg= "red")
+            label.config(text="Current Score: {}".format(score),font=("System",35),fg= "red")
         elif score >= 20 and score < 30:
-            label.config(text="Current Score: {}".format(score),font=("System",40),fg= "green")
+            label.config(text="Current Score: {}".format(score),font=("System",35),fg= "green")
         elif score >= 30:
-            label.config(text="Current Score: {}".format(score),font=("System",40),fg= "blue")
+            label.config(text="Current Score: {}".format(score),font=("System",35),fg= "blue")
         else:
-            label.config(text="Current Score: {}".format(score),font=("System",40))
+            label.config(text="Current Score: {}".format(score),font=("System",35))
         canvas.delete("food")
         food = Food()
     else:
@@ -147,15 +147,13 @@ window.title("Snake game")
 window.resizable(False, False)
 score = 0
 best_score = 0
-label = Label(window, text="Current Score: {}".format(score), font=('System', 40))
+label = Label(window, text="Current Score: {}".format(score), font=('System', 35))
 best_score_label = Label(window, text="Best Score This Session: {}".format(best_score), font=('System', 20))
 label.pack()
 best_score_label.pack()
 
 canvas = Canvas(window, bg=BACKGROUND_COLOR, height=GAME_HEIGHT, width=GAME_WIDTH)
 canvas.pack()
-start = Button(window,text="Press To Start/Restart",command=main)
-start.pack()
 difficulty1 = Button(window,text="Easy mode 🟢",command=lambda: set_difficulty("easy"))
 difficulty2 = Button(window,text="Normal mode 🟠",command=lambda: set_difficulty("normal"))
 difficulty3 = Button(window,text="Hard mode 🔴",command=lambda: set_difficulty("hard"))
